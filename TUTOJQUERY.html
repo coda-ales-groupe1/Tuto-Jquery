@@ -1,0 +1,573 @@
+<!doctype html>
+
+<html lang="en">
+	<head>
+  		<meta charset="utf-8">
+
+  		<title>Tuto Jquery</title>
+  		<meta name="description" content="The HTML5 Herald">
+  		<meta name="author" content="SitePoint">
+  		<link rel="stylesheet" href="styles/default.css">
+  		<script src="js/highlight.pack.js"></script>
+
+  
+
+  		<!--[if lt IE 9]>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  		<![endif]-->
+	</head>
+
+	<body>
+
+		<header>
+
+		<h1>Tuto d'Alais</h1>
+
+		<nav>
+			<ul>
+				<li>Introduction</li>
+				<li>Installer</li>
+				<li>Les Selecteurs</li>
+				<li>Animations</li>
+				<li>Manipuler le DOM</li>
+				<li>AJAX</li>
+				<li>Jquery UI</li>
+			</ul>
+		</nav>
+
+		</header>
+
+		<main>
+<!--________Intro_________-->
+
+		<section class="intro">
+
+			<h2>Introduction</h2>
+
+			<p>Avant de commencer à parler de jQuery, on va commencer par le début : javascript.
+
+			Quand vous parcourez un site internet, les pages sont envoyées à votre navigateur (Firefox, Chrome ou encore Safari...) par un serveur, sous forme de texte : le code HTML de la page.
+
+			Le navigateur est appelé le <span>client</span>, et le <span>serveur</span>... le serveur !</p>
+
+			<p>Cette différence client/serveur est fondamentale dans le développement web. Certains langages comme PHP sont exécutés côté serveur, et permettent de générer le code HTML qui sera envoyé au client.
+
+			Mais il existe d'autres langages qui s'exécutent directement chez le client (sur votre navigateur), comme JavaScript.</p>
+
+			<h3>Le DOM</h3>
+
+			<p>Vous avez peut-être déjà lu ces 3 lettres quelque part, sans vraiment savoir de quoi il s'agit.
+
+			Je viens de vous expliquer que votre navigateur reçoit le code HTML envoyé par le serveur. En l'état, ce code est inutile, pour le navigateur c'est juste un gros fichier texte avec plein de balises dedans, comme ça :</p>
+
+			<pre>
+				<code class="html plain">
+&lt;div class="header"&gt;
+	&lt;a href="/"&gt;&lt;img src="/style/images/logo_fc_3.jpg" alt="finalclap" /&gt;&lt;/a&gt;
+	&lt;div class="descr"&gt;
+		Tutoriaux gratuits pour&lt;br/&gt;
+		&lt;a href="/tutoriaux/photoshop/"&gt;Photoshop&lt;/a&gt;
+		&lt;a href="/tutoriaux/after-effects/"&gt;After Effects&lt;/a&gt;
+		&lt;a href="/tutoriaux/3dsmax/"&gt;3D Studio Max&lt;/a&gt;
+	&lt;/div&gt;
+			
+	&lt;div class="login"&gt;
+		&lt;a href="<a href="http://forum.finalclap.com/ucp.php?mode=register">http://forum.finalclap.com/ucp.php?mode=register</a>"&gt;Inscription&lt;/a&gt; -
+		&lt;a href="#" id="toggle_login"&gt;Connexion&lt;/a&gt;
+	&lt;/div&gt;
+			 
+	&lt;div class="header_liens"&gt;
+		&lt;a class="lien_j" href="/download/"&gt;Ressources&lt;/a&gt;
+		&lt;a class="lien_b" href="#" id="toggle_tutoriaux"&gt;Tutoriaux&lt;/a&gt;
+		&lt;a class="lien_v" href="/"&gt;Blog&lt;/a&gt;
+		&lt;a class="lien_r" href="<a href="http://forum.finalclap.com">http://forum.finalclap.com</a>"&gt;Forum&lt;/a&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+				</code>
+			</pre>
+
+
+			<p><em>Extrait de code HTML</em>
+
+			Donc votre navigateur va analyser le code, et construire un ensemble d'éléments en les structurant. C'est par ce procédé de <span>rendu</span> qu'un amoncellement de lignes de codes austères se transforme en page web affichée sur votre écran d'ordinateur.
+
+			Et bien c'est ça le DOM, une structure d'éléments un peu abstraite qui est derrière la page affichée.
+
+			Le problème du DOM, c'est qu'on ne voit pas concrètement de quoi il s'agit, puisque ça n'est ni le code HTML, ni le rendu graphique de la page. Heureusement, il existe des outils permettant de le voir, mais cela dépend de votre navigateur.
+
+			On va la faire simple, on va utiliser Firefox pour ce cours. L'extension Firebug permet d'afficher le DOM dans <a href="#">Firefox</a>. Allez vite installer Firebug sur votre Firefox avant de continuer...
+
+			<h3>Firebug</h3>
+
+			<pre><code class="js plain">console.log(</code><code class="js comments">/*&lt;variable, chaine de caractère&gt;*/</code><code class="js plain">);</code></pre>
+
+			<p><span><em>Interface de Firebug</em></span></p>
+
+			<p>Le fonctionnement est relativement simple : quand vous lancez Firebug, ça affiche un panneau dans la partie inférieure de la fenêtre.
+
+			Ce panneau est composé de plusieurs <span>onglets</span>, avec l'onglet <span>HTML</span> sélectionné par défaut. Cet onglet HTML est en réalité une représentation sous forme de code HTML du DOM.
+
+			En passant la souris sur les éléments, vous voyez que ceux-ci apparaissent en surbrillance sur la page web.
+
+			Vous pouvez sélectionner n'importe quel élément en cliquant sur le tag dans l'onglet DOM, ou alors directement en cliquant dessus sur la page web à l'aide de l'<span>inspecteur</span>.
+
+			Vous pouvez même accéder et modifier certaines propriétés de l'élément sélectionné grâce au panneau <span>Assistant</span>.
+
+			Je vous laisse regarder un peu partout pour vous familiariser avec votre nouveau jouet.
+
+			<span>Firebug</span> est sans doute l'outil le plus utile quand on fait du JavaScript (mais il est également d'une efficacité redoutable pour l'intégration HTML/CSS, soit dit en passant).
+
+			Notamment la console, qui permet d'afficher les éventuelles <span>erreurs</span> javascript, d'<span>exécuter</span> du code JS à la volée, mais qui permet aussi d'afficher des informations de débuggage (équivalent du print_r de PHP...) avec la fonction <span>console.log</span> :</p>
+
+			<pre><code class="js plain">console.log(/*&lt;variable, chaine de caractère&gt;*/);</code></pre>
+
+			<h3>Et JavaScript dans tout ça ?</h3>
+
+			<p>Enfin, nous y voilà, quel est le rapport entre JavaScript et tout ce qu'on vient de dire ???
+
+			JavaScript permet ni plus ni moins de manipuler le DOM, d'en modifier la structure, de changer les éléments qui le composent... à la volée, sans recharger la page.
+
+			On peut par exemple changer la couleur ou la taille de la police de toute la page ou d'un paragraphe en particulier.</p>
+
+			<h3>Les événements</h3>
+
+			<p>Dernier point de ce chapitre, la notion d'événement est fondamentale en JavaScript.
+
+			Un événement, c'est quelque chose qui se produit plus ou moins aléatoirement, comme par exemple le clic sur un élément du DOM (un lien, une image...).
+
+			JavaScript permet de "capter" ces événements, et d'effectuer des actions de votre choix lorsqu'ils se produisent.</p>
+
+			<p>Exemple 1</p>
+			<p>Affichage d'une boîte de dialogue alert lors du clic sur un élément</p>
+			<p>Exemple: <a href="#" onclick="alert('t\'as cliqué sur un lien Cod\'Alais !'); return false;">Cod'Alais</a></p>
+
+			<pre><code class="html plain">&lt;a href="<a href="http://www.finalclap.com/">http://www.finalclap.com/</a>" onclick="alert('t\'as cliqué sur un lien Cod'Alais !'); return false;"&gt;Cod'Alais&lt;/a&gt;</code></pre>
+
+			<p>Ici, le javascript est contenu dans l'attribut onclick de mon lien. Il contient deux instructions : alert, qui affiche une boîte de dialogue, et return false, qui empêche le navigateur de suivre le lien (qui le désactive en quelque sorte).</p>
+
+			<h3>Reprenons sur Jquery</h3>
+
+			<p>jQuery est une bibliothèque JS développée principalement par <a href="http://ejohn.org" target="_blank">John Resig</a>.</p>
+
+			<p>Par bibliothèque on entend donc un ensemble cohérent de fonctions permettant de s’affranchir des tâches rébarbatives et répétitives de façon uniforme sur les navigateurs les plus courants.
+
+			Elle est sous licence GPL et MIT, et donc complètement réutilisable sur des travaux professionnels. Son poids compressé est de 14 Ko, ce qui est tout à fait raisonnable sur la plupart de nos projets.
+
+			Les navigateurs supportés sont :</p>
+			<ul>
+				<li>Firefox 1.5+</li>
+				<li>Internet Explorer 6</li>
+				<li>Safari 2.0.2 +</li>
+				<li>Opera 9 +</li>
+			</ul>
+
+			<p>La bibliothèque est utilisée par exemple sur des sites comme :<p>
+			<ul>
+				<li>Dell</li>
+				<li>Google Code</li>
+				<li>Digg</li>
+				<li><abbr title="National Broadcasting Company">NBC</abbr></li>
+				<li>Amazon</li>
+				<li>Mozilla</li>
+				<li>WordPress</li>
+				<li>Drupal</li>
+				<li><abbr title="Système de Publication pour l'Internet Partagé">SPIP</abbr></li>
+				<li>The Zend Framework</li>
+				<li><abbr title="et cætera">etc</abbr></li>
+			</ul>
+
+			<p>Par ailleurs cette bibliothèque est compatible (elle n’entre pas en conflit) avec d’autres.</p>
+
+			<h3>Pré-requis</h3>
+
+			<p>A présent ces notions devraient vous être familières :</p>
+
+			<ul>
+				<li>JavaScript (évènements, <abbr title="et cætera">etc</abbr>)</li>
+				<li><abbr title="Document Object Model">DOM</abbr> (nœuds, arbre, <abbr title="et cætera">etc</abbr>) </li>
+				<li><abbr title="Cascading Style Sheet">CSS</abbr> (sélecteurs, <abbr title="et cætera">etc</abbr>)</li>
+				<li><abbr title="Asynchronous Javascript and XML">AJAX</abbr></li>
+			</ul>
+
+		</section>
+
+		<section class="Install">
+
+<!--________Installation________-->
+
+			<h2>Installer</h2>
+
+			<h3>Bases</h3>
+
+			<h4>Appel</h4>
+			<p>Typiquement, l’appel à la bibliothèque se fera de la manière suivante :</p>
+
+			<pre>
+				<code class="html">
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt; 
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr"&gt;
+    &lt;head&gt;
+        &lt;meta http-equiv="Content-Type" content="application/xhtml+xml;charset=iso-8859-15" /&gt;
+        &lt;title&gt;Exemple&lt;/title&gt;
+        &lt;script type="text/javascript" src="./js/lib/jquery.js"&gt;&lt;/script&gt;
+        &lt;script type="text/javascript" src="./js/exemple.js"&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        
+    &lt;/body&gt;
+&lt;/html&gt;
+ 				</code>
+ 			</pre>
+
+ 			<p>On charge <span>dans un premier temps</span> la bibliothèque, puis notre fichier <pre><code>exemple.js</code></pre> qui contiendra nos scripts.</p>
+
+ 			<h4>Compression</h4>
+ 			<p>jQuery est disponible sous trois formats :</p>
+
+ 			<ul>
+				<li>Sans compression (93&nbsp;<abbr title="Kilo Octet">Ko</abbr>)</li>
+				<li>Compressée à l’aide de <a hreflang="en" href="http://dean.edwards.name/packer/" target="blank">packer</a> (28&nbsp;<abbr title="Kilo Octet">Ko</abbr>)</li>
+				<li><span>Compressée à l’aide de <a hreflang="en" href="http://www.crockford.com/javascript/jsmin.html" target="blank">JSMin</a> puis de <a href="http://www.gzip.org/index-f.html" hreflang="en" target="blank">gzip</a> (15&nbsp;<abbr title="Kilo Octet">Ko</abbr>)</span></li>
+			</ul>
+
+			<p>Il conviendra d’appeler le format le plus léger dans un <span>environnement</span> de production, mais il reste possible de parcourir la bibliothèque dans sa version non compressée.</p>
+
+			<h4>La fonction <code>jquery()</code></h4>
+
+			<p>jQuery repose sur une seule fonction&nbsp;: <code>jQuery()</code> ou <span><code>$()</code>.</span> Comme toutes les fonctions JavaScript elle accepte des paramètres, et retourne un objet, que nous appellerons par la suite <span>“objet jQuery”.</span></p>
+
+			<p>Concernant les paramètres acceptés, nous pouvons passer :</p>
+
+			<h4>Une Fonction</h4>
+
+			<p>Dans ce cas, jQuery va exécuter cette fonction lorsque la page sera chargée par le navigateur. Plus précisément, <span>lorsque le DOM sera chargé</span>.</p>
+
+			<p>C’est pourquoi on en-capsule souvent l’ensemble du code écrit en jQuery dans :</p>
+
+			<pre>
+				<code class="javascript">
+$(function(){
+  	// ...
+}); 
+				</code>
+			</pre>
+
+			<p>On s’assure ainsi que le code sera exécute une fois la page chargée, et on est sûr de pouvoir manipuler le <abbr title="Document Object Model">DOM</abbr> sans erreur. Contrairement à l’évènement <code>window.onload</code>, le chargement complet des images de la page n’est pas nécessaire.</p>
+
+			<h4>Une chaine de caractères (query)</h4>
+
+			<h5>Les sélecteurs CSS</h5>
+
+			<p>Une des grandes forces de jQuery est d’intégrer la <span>syntaxe des sélecteurs CSS</span>. Il est alors facile de cibler facilement les nœuds DOM qui nous intéressent.</p>
+
+			<p>Par exemple :</p>
+
+			<pre>
+				<code class="javascript">
+var mon_objet_jQuery = $("#mon_image");
+var mon_objet_jQuery = $("#menu a"); 
+				</code>
+			</pre>
+
+ 			<p>Ou encore :</p>
+
+ 			<pre><code class="javascript">var mon_objet_jQuery = $("#id &gt; .classe, #id td:last-child"); </code></pre>
+
+ 			<p>Notez au passage que contrairement au support CSS des navigateurs, la librairie comprends tout à fait les <span>pseudos-classes</span> et les <span>pseudos-éléments</span>.</p>
+
+ 			<a hreflang="en" href="http://docs.jquery.com/DOM/Traversing/Selectors#CSS_Selectors">Voir la documentation des sélecteurs <abbr title="Cascading Style Sheet">CSS</abbr></a>
+
+ 			<h5>Les sélecteurs jQuery</h5>
+
+ 			<p>Il existe des <span>sélecteurs spécifiques à jQuery</span> qui ne trouvent pas d’équivalences en CSS. Ils sont toutefois très pratiques. Par exemple :</p>
+
+ 			<pre>
+ 				<code>
+var mon_objet_jQuery = $('tr:odd td'); 
+// les `td` dans les `tr` impairs var mon_objet_jQuery = $("p:eq(4)");   
+// le quatrième paragraphe var mon_objet_jQuery = $("p:lt(8)");   
+// les sept premiers paragraphes 
+				</code>
+			</pre>
+
+			<P>etc...</P>
+
+			<a hreflang="en" href="http://docs.jquery.com/DOM/Traversing/Selectors#Custom_Selectors">Voir la documentation des sélecteurs jQuery</a>
+
+			<h3>Méthodes</h3>
+
+			<p>Maintenant que nous avons un objet jQuery, il va falloir l’utiliser. Et pour cela toute une palette de <span>méthodes</span> sont disponibles dans la bibliothèque : manipulation du DOM, des CSS, des évènements et autres effets visuels.</p>
+
+			<p>Si on désire par exemple masquer progressivement les paragraphes d’une page, on utilise :</p>
+
+			<pre><code class="javascript">$("p").fadeOut(); </code></pre>
+
+			<p>Soit sans passer de paramètre comme cela, soit en précisant une durée en mili-secondes ou encore à l’aide des chaines <code>slow</code>, <code>fast</code> et <code>normal</code>.</p>
+
+			<p>Deux autres exemples :</p>
+
+			<pre>
+				<code class="javascript">
+$("li").html("lorem &lt;strong&gt;ipsum&lt;/strong&gt; dolor");
+$("#menu a").click(function(){
+     window.open($(this).attr("href"));
+     return false;
+}); 
+				</code>
+			</pre>
+
+			<p>Dans le dernier, vous remarquerez qu’on combine des fonctions JavaScript “classiques” au code jQuery, mais aussi qu’on transforme l’objet courant <code>this</code> en objet jQuery avec <code>$(this)</code>.</p>
+
+			<p>L’ensemble des méthodes et leurs documentations sont disponibles sur <span><a hreflang="en" href="http://visualjquery.com/">Visual jQuery</a>.</span></p>
+
+			<h3>Callback</h3>
+
+			<p>Certaines fonctions (comme la fonction <code>fadeOut()</code>) acceptent une autre fonction en paramètre. Cette dernière sera exécutée à la fin de l’exécution de la première. C’est ce qu’on appelle un <span>callback.</span></p>
+
+			<p>Cela permet par exemple de créer des animations&nbsp;:</p>
+
+			<pre>
+				<code class="javascript">
+$(".test").fadeOut("slow",function(){
+$(this).fadeIn("slow");
+}); 
+				</code>
+			</pre>
+
+			<h3>Chainabilité</h3>
+
+			<p>On l’a vu les méthodes jQuery retournent un objet jQuery. Cela permet de <strong>“chainer”</strong> les fonctions.</p>
+
+			<p>Ainsi au lieu d’écrire&nbsp;:</p>
+
+			<pre>
+				<code class="javascript">
+$(".toto").append(" un texte");
+$(".toto").css("border","1px solid red");
+$(".toto").addClass("titi");
+$(".toto").removeClass("toto"); 
+				</code>
+			</pre>
+
+			<p>On peut simplifier par l’exécution du code par&nbsp;:</p>
+
+			<pre><code class="javascript">$(".toto").append(" un texte").css("border","1px solid red").addClass("titi").removeClass("toto"); </code></pre>
+
+		</section>
+
+		<section class="utilDOM">
+
+<!--________Utilisation des DOM___________-->
+
+			<h2>Parcourir les éléments du DOM</h2>
+
+			<p>Le parcours du DOM permet de se déplacer aisément sur la page, afin de récupérer certains éléments HTML. Un peu comme pour les sélecteurs, il faudra bien comprendre le principe de la descendance, car c'est un concept très puissant et très utilisé dans les langages orienté objet comme JavaScript, rappelez-vous-en !</p>
+
+			<h3>Naviguer dans le DOM</h3>
+
+			<h4>Rappel sur le Document Object Model</h4>
+
+			<p>Le <span>Document Object Model</span>, beaucoup plus couramment appelé DOM, permet littéralement de naviguer entre les éléments HTML. Nous rappelons qu'il s'agit d'une interface de programmation, utilisée exclusivement pour les documents XML et HTML, qui se base sur la structure. C'est grâce à ce concept qu'il est possible d'agir sur une page web avec JavaScript, et plus précisément ses fonctions ; sans cela, nous ne pourrions pas <em>désigner</em> les éléments !</p>
+
+			<p>Vous vous en doutez, nous faisons constamment appel au DOM, même si en jQuery, on s'en rend beaucoup moins compte. En effet, même si nous n'avons pas encore appris à utiliser les fonctions de parcours, sachez que la sélection d'éléments, par exemple, use de certaines fonctions JavaScript qui ont besoin du DOM (c.f. <code>getElementById()</code>).</p>
+
+			<h4>Positionnement des éléments</h4>
+
+			<p>La position des éléments dans la structure d'une page HTML est très importante. C'est pourquoi on vous répète souvent : ayez un code propre, une structure claire et bien rangée, et vous aurez beaucoup plus de facilité à manipuler vos éléments en JavaScript ! Une sémantique bien faite, c'est un gain de temps et d'énergie. Prenons pour exemple un code HTML très mauvais, que l'on peut malheureusement rencontrer sur le web :</p>
+		
+			<pre>
+				<code>
+&lt;div id="bloc"&gt;
+&lt;a href="#" id="lien"&gt;Un lien&lt;/a&gt;&lt;a href="#" id="lien"&gt;Un autre lien&lt;/a&gt;
+
+&lt;div&gt;
+
+&lt;span class="paragraphe"&gt;Contenu&lt;/span&gt;
+&lt;div&gt;&lt;/div&gt;
+&lt;/div&gt;
+				</code>
+			</pre>
+
+			<aside><p>Nous espérons sincèrement que vous n'écrirez JAMAIS ce genre d'aberration...</p></aside><p>Dans un cas comme celui-là, la sélection simple ne sera pas altérée ; en revanche, si vous devez parcourir le DOM pour ne pas devoir refaire une requête d'élément inutile, alors bonne chance ! Une <span>bonne sémantique est primordiale</span>, nous ne vous le répéterons jamais assez.</p>
+
+			<h3>La descendance</h3>
+
+			<p>Si on vous rabâche depuis quelques temps que la descendance est un concept très utilisé en programmation orientée objet, ce n'est pas pour rien : souvent apparentée à l'<em>héritage</em>, cette technique se base sur le principe de <span>parents</span> et d'<span>enfants</span>. Dans un contexte comme le nôtre, cela peut paraître un peu tiré par les cheveux comme méthode de travail, et pourtant, sans cela, il serait beaucoup plus compliqué de réaliser de véritables applications en jQuery !</p>
+
+			<p>Quelques chapitres auparavant, nous avons abordé rapidement la chose avec les sélecteurs, et plus précisément ceux-ci :</p>
+
+			<ul>
+				<li><p><code>$('.parent .enfant')</code> ;</p></li>
+				<li><p><code>$('.parent &gt; .enfant')</code>.</p></li>
+			</ul>
+
+			<p>En effet, nous vous avions expliqué qu'une structure HTML permettait d'imbriquer des blocs les uns dans les autres : ceux étant à l'intérieur sont appelés <span>enfants</span>, ceux qui entourent un élément sont des <span>parents</span>. Le parcours du DOM va énormément se baser sur ce concept, à retenir et maîtriser absolument. Nous allons étudier quelques fonctions qui permettent d'accéder aux éléments, qu'ils soient parents, enfants, ou même frères !</p>
+
+			<h5>Parents, enfants et ancêtres</h5>
+
+			<p>Commençons par une des fonctions de parcours les plus utilisées : <code>parent()</code>. Plus facile à retenir, tu meurs ! Comme vous vous en doutez, cette méthode va nous permettre d'accéder au bloc parent de l'élément actuellement ciblé. Lorsque nous agirons sur notre objet jQuery, ce ne sera donc plus ce dernier qui sera influencé, mais bien le bloc qui l'entoure.</p>
+
+			<pre>
+				<code>
+$('a').css('color', 'blue'); // rend le lien ciblé seulement de couleur bleue\n\n$('a').parent().css('color', 'blue');\n// ici, c'est le parent de l'enfant (un paragraphe, si l'on respecte la sémantique) qui verra son texte devenir bleu
+$('a').css('color', 'blue'); // rend le lien ciblé seulement de couleur bleue
+$('a').parent().css('color', 'blue'); // ici, c'est le parent de l'enfant (un paragraphe, si l'on respecte la sémantique) qui verra son texte devenir bleu
+				</code>
+			</pre>
+
+			<figure id="r-1572356" data-claire-element-id="1594675" class="">
+				<img src="img/imgparenf.png" alt="Image utilisateur">
+			</figure>
+
+			<p>Il est possible de préciser la requête, en sélectionnant la classe, l'identifiant et le type de l'élément à récupérer en tant qu'argument :</p>
+
+			<pre>
+				<code>
+$('a').parent('.texte'); // retourne seulement l'ensemble des blocs parents ayant la classe .texte('a').parent('.texte'); // retourne seulement l'ensemble des blocs parents ayant la classe .texte
+				</code>
+			</pre>
+
+			<p>Inversement, la fonction <code>children()</code> permet de cibler l'élément enfant descendant directement de l'élément sélectionné. Cette méthode équivaut donc au sélecteur <span>&gt;</span>, mais permet, comme la fonction <code>parent()</code>, de préciser la recherche avec un argument.</p>
+
+			<pre>
+				<code>
+$('div').children(); // cible l'élément enfant direct du bloc div
+$('div').children('p'); // cible seulement l'ensemble des paragraphes enfants du bloc div
+$('div').children(); // cible l'élément enfant direct du bloc div
+$('div').children('p'); // cible seulement l'ensemble des paragraphes enfants du bloc div
+				</code>
+			</pre>
+
+			<p>Cette méthode est néanmoins quelque peu restrictive : elle ne va cibler que les enfants <span>directs</span> d'un élément. Que se passerait-il si l'on voulait récupérer tous les fils et petits-fils d'un bloc ? On ne pourrait tout simplement pas, ou tout du moins avec <code>children()</code>. Car oui, bien heureusement, jQuery possède la fonction <code>find()</code>, qui va se charger de trouver tous les enfants d'un élément, quelle que soit leur position par rapport à ce dernier ! Il suffit alors de donner le type d'élément à trouver, et <code>find()</code> se charge du reste :</p>
+
+			<pre>
+				<code>
+$('body').find('p'); // cible l'ensemble des paragraphes contenus dans le corps du document, quelle que soit leur position !
+$('body').find('p'); // cible l'ensemble des paragraphes contenus dans le corps du document, quelle que soit leur position !
+				</code>
+			</pre>
+
+			<p>La dernière méthode usant de ce principe de descendance est <code>parents()</code>. N'oubliez pas le "s", car elle est légèrement différente de la fonction <code>parent()</code>, et ne s'utilise pas tout à fait de la même façon ! Concrètement, cette dernière retournait seulement la première occurrence trouvée : dès qu'elle tombait sur un parent, elle s'arrêtait sans aller plus loin. Il se peut que vous vouliez agir sur <span>tous</span> les parents d'un élément en même temps. Par soucis de précision, on ne parlera ici plus de <span>parents</span>, mais d'<span>ancêtres</span>.</p>
+
+			<pre>
+				<code>
+$('a').parents(); // cible tous les éléments ancêtres du lien : paragraphe, bloc(s), balise &lt;body&gt;...
+$('a').parents(); // cible tous les éléments ancêtres du lien : paragraphe, bloc(s), balise &lt;body&gt;...
+				</code>
+			</pre>
+
+			<h5>La fraternité d'éléments</h5>
+
+			<p>Après le père et le grand-père, nous demandons le frère ! Eh oui, comme pour les méthodes développées précédemment, nous sommes dans l'obligation d'étudier les fonctions ciblant les élément frères de la sélection. Le frère d'un élément, c'est tout simplement la balise présente directement à côté de celui-ci.</p>
+
+			<figure>
+				<img src="img/fratelem.png" alt="Image utilisateur">
+			</figure>
+
+			<p>Il y a quatre façons de faire appel à ce concept :</p>
+
+			<ul>
+				<li><p><code>prev()</code>, qui sélectionne l'élément frère <span>précédant</span> directement l'objet ciblé ;</p></li>
+				<li><p><code>next()</code>, qui sélectionne l'élément frère <span>suivant</span> directement l'objet ciblé ;</p></li>
+				<li><p><code>prevAll()</code>, qui sélectionne tous les éléments frères <span>précédant</span> l'objet ciblé ;</p></li>
+				<li><p><code>nextAll()</code>, qui sélectionne tous les éléments frères <span>suivant</span> l'objet ciblé.</p></li>
+			</ul>
+
+			<h3>Filtrer et boucler les éléments</h3>
+
+			<p>Moins utilisés mais tout de même d'une praticité flagrante, les filtres et les conditions permettent de cibler des éléments de manière plus précise et concise que les méthodes apparentées à la descendance. En effet, jusqu'ici, vous ne savez que sélectionner les éléments enfants, parents, ancêtres ou frères d'un objet. En revanche, le ciblage par l'index, par exemple, vous est totalement inconnu. Afin de combler ces lacunes, nous vous invitons à lire la suite.</p>
+
+			<h4>Filtrer les éléments</h4>
+
+			<h5>Filtre par sélecteur</h5>
+
+			<p>La méthode principale permettant de filtrer des éléments se nomme <code>filter()</code>. Elle va permettre de supprimer tous les objets ne correspondant pas à la recherche de la sélection, ce qui est très pratique dans le cas où vous souhaitez ne récupérer que certains éléments et pas d'autres, dans une recherche plus globale. La requête est à spécifier en tant qu'argument, et peut être vraiment très précise dans le cas où il est possible de donner plusieurs sélecteurs d'un seul coup en les séparant de virgules !</p>
+
+			<pre>
+				<code>
+$('p').filter('.texte'); // supprime de la sélection tous les paragraphes n'ayant pas la classe .texte
+$('p').filter('.texte, #description'); // supprime de la sélection tous les paragraphes n'ayant pas la classe .texte ou l'identifiant #description
+$('p').filter('.texte'); // supprime de la sélection tous les paragraphes n'ayant pas la classe .texte
+$('p').filter('.texte, #description'); // supprime de la sélection tous les paragraphes n'ayant pas la classe .texte ou l'identifiant #description
+				</code>
+			</pre>
+
+			<aside><p>La méthode <code>not()</code> permet de faire la même chose, mais prend en argument les objets à <span>ne pas prendre en compte</span>.</p></aside>
+
+			<h5>Filtre par index</h5>
+
+			<p>Vous avez déjà rencontré le sélecteur <code>:eq()</code> plus tôt dans le cours. Il suffisait de l'utiliser avec un index pour sélectionner un élément grâce à celui-ci. Il existe également la méthode <code>eq()</code> qui elle s'exécute sur un objet. Elle va donc parcourir le tableau d'occurrences trouvées et sélectionner seulement celui qui possède l'index indiqué en argument.</p>
+
+			<pre>
+				<code>
+$('p').eq(2); // cible le troisième paragraphe trouvé (l'index commence à 0)
+$('p').eq(2); // cible le troisième paragraphe trouvé (l'index commence à 0)
+				</code>
+			</pre>
+
+			<p>Petite astuce, vous pouvez spécifier un nombre négatif : jQuery commencera alors à compter à partir du dernier index. Si vous possédez quatre paragraphes et que vous donnez la valeur -1 à la méthode, alors votre objet sera le quatrième paragraphe.</p>
+			<p>Moins utilisée, la méthode <cod>slice()</code> permet de prendre une portion d'un tableau d'objets, grâce à leur index. Elle prend un argument obligatoire, et un second facultatif :</p>
+
+			<ol>
+				<li><p><em>start</em>, qui est la position (ou l'index) du premier élément à filtrer ;</p></li>
+				<li><p><em>end</em>, qui est la position (ou l'index) du dernier élément à filtrer, non pris en compte par la sélection.</p></li>
+			</ol>
+
+			<p>Il s'agit donc littéralement de <em>couper</em> un tableau contenant l'ensemble de nos éléments ciblés. Seuls ceux étant compris entre les index spécifiés seront gardés, les autres étant 	alors supprimés de la sélection :</p>
+
+			<pre>
+				<code>
+$('div').slice(1, 3); // garde seulement les blocs div ayant l'index 1 ou 2
+$('div').slice(1,3); // garde seulement les blocs div ayant l'index 1 ou 2
+				</code>
+			</pre>
+
+			<h5>Vérifier le type d'un élément</h5>
+
+			<p>La fonction <code>is()</code> est peu utilisée, mais il est bon de la connaître dans le cas où vous rencontrez un code qui la contient pour une quelconque raison. Elle renvoie simplement un booléen, <code>true</code> si elle déduit que l'argument donné correspond au type de l'élément analysé, <code>false</code> si ce n'est pas le cas :</p>
+
+			<pre>
+				<code>
+var vrai = $('div').is('div');
+var faux = $('div').is('p');
+
+console.log(vrai); // affiche true
+console.log(faux); // affiche false
+var vrai = $('div').is('div');
+var faux = $('div').is('p');
+console.log(vrai); // affiche true
+console.log(faux); // affiche false
+				</code>
+			</pre>
+
+			<h4>Boucler les éléments</h4>
+
+			<p>Non content de sa puissance, jQuery révolutionne le concept des boucles en permettant une nouvelle forme : le bouclage d'éléments. Assez particulier, ce système est toutefois bien utile : il va traiter chaque occurrence trouvée et exécuter une fonction définie dessus. Il s'agit de la méthode <code>each()</code>. Elle va agir sur chaque objet trouvé, en effectuant littéralement une boucle. Cela va vous permettre par exemple d'exécuter des fonctions qui, normalement, s'arrête au premier élément rencontré, les autres étant laissé à l'abandon.</p>
+
+			<pre>
+				<code>
+$('p').each( function(){
+    alert( $(this).text() ); // $(this) représente l'objet courant
+} );
+$('p').each( function(){
+    alert( $(this).text()); // $(this) représente l'objet courant
+} );
+				</code>
+			</pre>
+
+			<aside><p>Il est possible de récupérer l'index de l'élément courant grâce à un argument, à placer dans la fonction de retour.</p></aside>
+
+			<p>Si la fonction retourne <code>false</code>, alors la boucle s'arrête brutalement. Si au contraire elle retourne <code>true</code>, alors la boucle passe directement à l'élément suivant. Il existe d'autres utilisations de cette méthodes, notamment avec sa sœur <code>$.each()</code>, mais nous ne les aborderons pas ici car elles ne sont pas vraiment courantes et utilisées.</p>
+
+			<p>Maintenant que vous savez parcourir le DOM, que vous maîtrisez les notions de descendance, de fraternité et de filtrage d'éléments, vous pouvez enfin passer à la manipulation du code HTML lui-même!</p>
+
+		</section>
+
+	</main>
+
+	<script>
+		hljs.initHighlightingOnLoad();
+	</script>
+
+</body>
+</html>
